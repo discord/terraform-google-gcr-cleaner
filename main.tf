@@ -27,6 +27,18 @@ resource "google_cloud_run_service" "this" {
             value = env.value.value
           }
         }
+
+        resources {
+          limits = {
+            # CPU usage limit
+            # https://cloud.google.com/run/docs/configuring/cpu
+            cpu = var.cloud_run_cpu_usage_limit
+
+            # Memory usage limit (per container)
+            # https://cloud.google.com/run/docs/configuring/memory-limits
+            memory = var.cloud_run_memory_usage_limit
+          }
+        }
       }
       service_account_name = google_service_account.cleaner.email
       timeout_seconds      = var.cloud_run_service_timeout_seconds

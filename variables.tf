@@ -34,6 +34,18 @@ variable "cloud_run_service_timeout_seconds" {
   default     = 60
 }
 
+variable "cloud_run_cpu_usage_limit" {
+  description = "Describes the limit of CPU allowed by the job."
+  type        = string
+  default = "1000m" # 1 vCPU
+}
+
+variable "cloud_run_memory_usage_limit" {
+  description = "Describes the limit of memory allowed by the job."
+  type        = string
+  default = "512Mi"
+}
+
 variable "create_app_engine_app" {
   description = "Whether to create an App Engine application."
   type        = bool
