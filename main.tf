@@ -112,9 +112,11 @@ resource "google_cloud_scheduler_job" "this" {
       keep             = tonumber(each.value.keep),
       repos            = [each.value.repo],
       repo_skip_filter = each.value.repo_skip_filter,
+      repo_prefix_filter = each.value.repo_prefix_filter,
       tag_filter       = each.value.tag_filter,
       tag_filter_any   = each.value.tag_filter_any,
       tag_filter_all   = each.value.tag_filter_all,
+      tag_keep_filter  = each.value.tag_keep_filter,
       dry_run          = tobool(each.value.dry_run),
       recursive        = tobool(each.value.recursive),
     }))
