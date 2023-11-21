@@ -37,15 +37,15 @@ locals {
       repo                      = "${repo.storage_region != null ? "${repo.storage_region}.gcr.io" : "gcr.io"}/${repo.project_id != null ? repo.project_id : local.google_project_id}"
       grace                     = repo.parameters != null ? (repo.parameters.grace != null ? repo.parameters.grace : "0") : "0"
       keep                      = repo.parameters != null ? (repo.parameters.keep != null ? repo.parameters.keep : "0") : "0"
-      repo_skip_filter          = repo.parameters != null ? (repo.parameters.repo_skip_filter != null ? repo.parameters.repo_skip_filter : "") : ""
-      repo_prefix_filter        = repo.parameters != null ? (repo.parameters.repo_prefix_filter != null ? repo.parameters.repo_prefix_filter : "") : ""
+      repo_keep_filter          = repo.parameters != null ? (repo.parameters.repo_keep_filter != null ? repo.parameters.repo_keep_filter : "") : ""
+      repository_match_prefix        = repo.parameters != null ? (repo.parameters.repository_match_prefix != null ? repo.parameters.repository_match_prefix : "") : ""
       tag_filter                = repo.parameters != null ? (repo.parameters.tag_filter != null ? repo.parameters.tag_filter : "") : ""
       tag_filter_any            = repo.parameters != null ? (repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "") : ""
       tag_filter_all            = repo.parameters != null ? (repo.parameters.tag_filter_all != null ? repo.parameters.tag_filter_all : "") : ""
-      tag_keep_filter           = repo.parameters != null ? (repo.parameters.tag_keep_filter != null ? repo.parameters.tag_keep_filter : "") : ""
+      tag_keep_any           = repo.parameters != null ? (repo.parameters.tag_keep_any != null ? repo.parameters.tag_keep_any : "") : ""
       recursive                 = true
       dry_run                   = repo.parameters != null ? (repo.parameters.dry_run != null ? repo.parameters.dry_run : false) : false
-      filter                    = repo.parameters != null ? "grace-${repo.parameters.grace != null ? repo.parameters.grace : "0"}-keep-${repo.parameters.keep != null ? repo.parameters.keep : "0"}-repo_keep_filter-${repo.parameters.repo_skip_filter != null ? repo.parameters.repo_skip_filter : "no"}-repository_match_prefix-${repo.parameters.repo_prefix_filter != null ? repo.parameters.repo_prefix_filter : "no"}-tag_keep_any-${repo.parameters.tag_keep_filter != null ? repo.parameters.tag_keep_filter : "no"}-tag_filter-${repo.parameters.tag_filter != null ? repo.parameters.tag_filter : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}${repo.parameters.dry_run != null ? (repo.parameters.dry_run ? "-dry_run" : "") : ""}" : "delete-all-untagged-images-recursive"
+      filter                    = repo.parameters != null ? "grace-${repo.parameters.grace != null ? repo.parameters.grace : "0"}-keep-${repo.parameters.keep != null ? repo.parameters.keep : "0"}-repo_keep_filter-${repo.parameters.repo_keep_filter != null ? repo.parameters.repo_keep_filter : "no"}-repository_match_prefix-${repo.parameters.repository_match_prefix != null ? repo.parameters.repository_match_prefix : "no"}-tag_keep_any-${repo.parameters.tag_keep_any != null ? repo.parameters.tag_keep_any : "no"}-tag_filter-${repo.parameters.tag_filter != null ? repo.parameters.tag_filter : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}${repo.parameters.dry_run != null ? (repo.parameters.dry_run ? "-dry_run" : "") : ""}" : "delete-all-untagged-images-recursive"
       scheduler_job_name        = repo.parameters != null ? repo.parameters.scheduler_job_name : null
       scheduler_job_description = repo.parameters != null ? repo.parameters.scheduler_job_description : null
     } if repo.clean_all == true
@@ -60,16 +60,16 @@ locals {
           repo                      = "${gcr.storage_region != null ? "${gcr.storage_region}.gcr.io" : "gcr.io"}/${gcr.project_id != null ? gcr.project_id : local.google_project_id}/${repo.name}"
           grace                     = repo.grace != null ? repo.grace : "0"
           keep                      = repo.keep != null ? repo.keep : "0"
-          repo_skip_filter          = repo.repo_skip_filter != null ? repo.repo_skip_filter : ""
-          repo_prefix_filter        = repo.repo_prefix_filter != null ? repo.repo_prefix_filter : ""
+          repo_keep_filter          = repo.repo_keep_filter != null ? repo.repo_keep_filter : ""
+          repository_match_prefix        = repo.repository_match_prefix != null ? repo.repository_match_prefix : ""
           tag_filter                = repo.tag_filter != null ? repo.tag_filter : ""
           tag_filter_any            = repo.tag_filter_any != null ? repo.tag_filter_any : ""
           tag_filter_all            = repo.tag_filter_all != null ? repo.tag_filter_all : ""
-          tag_keep_filter           = repo.tag_keep_filter != null ? repo.tag_keep_filter : ""
+          tag_keep_any           = repo.tag_keep_any != null ? repo.tag_keep_any : ""
 
           recursive                 = repo.recursive != null ? repo.recursive : false
           dry_run                   = repo.dry_run != null ? repo.dry_run : false
-          filter                    = "grace-${repo.grace != null ? repo.grace : "0"}-keep-${repo.keep != null ? repo.keep : "0"}-repo_keep_filter-${repo.repo_skip_filter != null ? repo.repo_skip_filter : "no"}-repository_match_prefix-${repo.repo_prefix_filter != null ? repo.repo_prefix_filter : "no"}-tag_keep_any-${repo.tag_keep_filter != null ? repo.tag_keep_filter : "no"}-tag_filter-${repo.tag_filter != null ? repo.tag_filter : "no"}-tag_filter_any-${repo.tag_filter_any != null ? repo.tag_filter_any : "no"}-tag_filter_all-${repo.tag_filter_all != null ? repo.tag_filter_all : "no"}-recursive-${repo.recursive != null ? repo.recursive : false}${repo.dry_run != null ? (repo.dry_run ? "-dry_run" : "") : ""}"
+          filter                    = "grace-${repo.grace != null ? repo.grace : "0"}-keep-${repo.keep != null ? repo.keep : "0"}-repo_keep_filter-${repo.repo_keep_filter != null ? repo.repo_keep_filter : "no"}-repository_match_prefix-${repo.repository_match_prefix != null ? repo.repository_match_prefix : "no"}-tag_keep_any-${repo.tag_keep_any != null ? repo.tag_keep_any : "no"}-tag_filter-${repo.tag_filter != null ? repo.tag_filter : "no"}-tag_filter_any-${repo.tag_filter_any != null ? repo.tag_filter_any : "no"}-tag_filter_all-${repo.tag_filter_all != null ? repo.tag_filter_all : "no"}-recursive-${repo.recursive != null ? repo.recursive : false}${repo.dry_run != null ? (repo.dry_run ? "-dry_run" : "") : ""}"
           scheduler_job_name        = repo.scheduler_job_name
           scheduler_job_description = repo.scheduler_job_description
         }
