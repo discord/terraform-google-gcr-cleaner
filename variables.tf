@@ -37,13 +37,13 @@ variable "cloud_run_service_timeout_seconds" {
 variable "cloud_run_cpu_usage_limit" {
   description = "Describes the limit of CPU allowed by the job."
   type        = string
-  default = "1000m" # 1 vCPU
+  default     = "1000m" # 1 vCPU
 }
 
 variable "cloud_run_memory_usage_limit" {
   description = "Describes the limit of memory allowed by the job."
   type        = string
-  default = "512Mi"
+  default     = "512Mi"
 }
 
 variable "create_app_engine_app" {
@@ -110,11 +110,11 @@ EOF
       grace                     = optional(string)
       keep                      = optional(string)
       repo_keep_filter          = optional(string)
-      repository_match_prefix        = optional(string)
+      repository_match_prefix   = optional(string)
       tag_filter                = optional(string)
       tag_filter_any            = optional(string)
       tag_filter_all            = optional(string)
-      tag_keep_any           = optional(string)
+      tag_keep_any              = optional(string)
       recursive                 = optional(bool)
       dry_run                   = optional(bool)
       scheduler_job_name        = optional(string)
@@ -125,11 +125,11 @@ EOF
       grace                     = optional(string)
       keep                      = optional(string)
       repo_keep_filter          = optional(string)
-      repository_match_prefix        = optional(string)
+      repository_match_prefix   = optional(string)
       tag_filter                = optional(string)
       tag_filter_any            = optional(string)
       tag_filter_all            = optional(string)
-      tag_keep_any           = optional(string)
+      tag_keep_any              = optional(string)
       dry_run                   = optional(bool)
       scheduler_job_name        = optional(string)
       scheduler_job_description = optional(string)
@@ -158,6 +158,8 @@ list(object({
     parameters = Map of parameters to apply to all repositories when `clean_all` is set to `true` (optional(object({
         grace          = Relative duration in which to ignore references. This value is specified as a time duration value like "5s" or "3h". If set, refs newer than the duration will not be deleted. If unspecified, the default is no grace period (all untagged image refs are deleted) (optional(string))
         keep           = If an integer is provided, it will always keep that minimum number of images. Note that it will not consider images inside the `grace` duration (optional(string))
+        repo_keep_filter = If specified, any image that matches this regular expression will be kept.
+        repository_match_prefix = If specified, only images whose repository matches this regular expression will be deleted. (optional(string))
         tag_filter     = (Deprecated) If specified, any image where the first tag matches this given regular expression will be deleted. The image will not be deleted if other tags match the regular expression (optional(string))
         tag_filter_any = If specified, any image with at least one tag that matches this given regular expression will be deleted. The image will be deleted even if it has other tags that do not match the given regular expression (optional(string))
         tag_filter_all = If specified, any image where all tags match this given regular expression will be deleted. The image will not be delete if it has other tags that do not match the given regular expression (optional(string))
@@ -178,9 +180,12 @@ EOF
     parameters = optional(object({
       grace                     = optional(string)
       keep                      = optional(string)
+      repo_keep_filter          = optional(string)
+      repository_match_prefix   = optional(string)
       tag_filter                = optional(string)
       tag_filter_any            = optional(string)
       tag_filter_all            = optional(string)
+      tag_keep_any              = optional(string)
       dry_run                   = optional(bool)
       recursive                 = optional(bool)
       scheduler_job_name        = optional(string)

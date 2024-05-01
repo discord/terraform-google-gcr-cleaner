@@ -38,11 +38,11 @@ locals {
       grace                     = repo.parameters != null ? (repo.parameters.grace != null ? repo.parameters.grace : "0") : "0"
       keep                      = repo.parameters != null ? (repo.parameters.keep != null ? repo.parameters.keep : "0") : "0"
       repo_keep_filter          = repo.parameters != null ? (repo.parameters.repo_keep_filter != null ? repo.parameters.repo_keep_filter : "") : ""
-      repository_match_prefix        = repo.parameters != null ? (repo.parameters.repository_match_prefix != null ? repo.parameters.repository_match_prefix : "") : ""
+      repository_match_prefix   = repo.parameters != null ? (repo.parameters.repository_match_prefix != null ? repo.parameters.repository_match_prefix : "") : ""
       tag_filter                = repo.parameters != null ? (repo.parameters.tag_filter != null ? repo.parameters.tag_filter : "") : ""
       tag_filter_any            = repo.parameters != null ? (repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "") : ""
       tag_filter_all            = repo.parameters != null ? (repo.parameters.tag_filter_all != null ? repo.parameters.tag_filter_all : "") : ""
-      tag_keep_any           = repo.parameters != null ? (repo.parameters.tag_keep_any != null ? repo.parameters.tag_keep_any : "") : ""
+      tag_keep_any              = repo.parameters != null ? (repo.parameters.tag_keep_any != null ? repo.parameters.tag_keep_any : "") : ""
       recursive                 = true
       dry_run                   = repo.parameters != null ? (repo.parameters.dry_run != null ? repo.parameters.dry_run : false) : false
       filter                    = repo.parameters != null ? "grace-${repo.parameters.grace != null ? repo.parameters.grace : "0"}-keep-${repo.parameters.keep != null ? repo.parameters.keep : "0"}-repo_keep_filter-${repo.parameters.repo_keep_filter != null ? repo.parameters.repo_keep_filter : "no"}-repository_match_prefix-${repo.parameters.repository_match_prefix != null ? repo.parameters.repository_match_prefix : "no"}-tag_keep_any-${repo.parameters.tag_keep_any != null ? repo.parameters.tag_keep_any : "no"}-tag_filter-${repo.parameters.tag_filter != null ? repo.parameters.tag_filter : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}-tag_filter_any-${repo.parameters.tag_filter_any != null ? repo.parameters.tag_filter_any : "no"}${repo.parameters.dry_run != null ? (repo.parameters.dry_run ? "-dry_run" : "") : ""}" : "delete-all-untagged-images-recursive"
@@ -57,15 +57,15 @@ locals {
     for gcr in var.gcr_repositories : [
       for repo in gcr.repositories : merge(repo,
         {
-          repo                      = "${gcr.storage_region != null ? "${gcr.storage_region}.gcr.io" : "gcr.io"}/${gcr.project_id != null ? gcr.project_id : local.google_project_id}/${repo.name}"
-          grace                     = repo.grace != null ? repo.grace : "0"
-          keep                      = repo.keep != null ? repo.keep : "0"
-          repo_keep_filter          = repo.repo_keep_filter != null ? repo.repo_keep_filter : ""
-          repository_match_prefix        = repo.repository_match_prefix != null ? repo.repository_match_prefix : ""
-          tag_filter                = repo.tag_filter != null ? repo.tag_filter : ""
-          tag_filter_any            = repo.tag_filter_any != null ? repo.tag_filter_any : ""
-          tag_filter_all            = repo.tag_filter_all != null ? repo.tag_filter_all : ""
-          tag_keep_any           = repo.tag_keep_any != null ? repo.tag_keep_any : ""
+          repo                    = "${gcr.storage_region != null ? "${gcr.storage_region}.gcr.io" : "gcr.io"}/${gcr.project_id != null ? gcr.project_id : local.google_project_id}/${repo.name}"
+          grace                   = repo.grace != null ? repo.grace : "0"
+          keep                    = repo.keep != null ? repo.keep : "0"
+          repo_keep_filter        = repo.repo_keep_filter != null ? repo.repo_keep_filter : ""
+          repository_match_prefix = repo.repository_match_prefix != null ? repo.repository_match_prefix : ""
+          tag_filter              = repo.tag_filter != null ? repo.tag_filter : ""
+          tag_filter_any          = repo.tag_filter_any != null ? repo.tag_filter_any : ""
+          tag_filter_all          = repo.tag_filter_all != null ? repo.tag_filter_all : ""
+          tag_keep_any            = repo.tag_keep_any != null ? repo.tag_keep_any : ""
 
           recursive                 = repo.recursive != null ? repo.recursive : false
           dry_run                   = repo.dry_run != null ? repo.dry_run : false
@@ -84,12 +84,15 @@ locals {
       registry_name             = "${gar.region}-docker.pkg.dev/${gar.project_id != null ? gar.project_id : local.google_project_id}/${gar.registry_name}"
       grace                     = gar.parameters != null ? (gar.parameters.grace != null ? gar.parameters.grace : "0") : "0"
       keep                      = gar.parameters != null ? (gar.parameters.keep != null ? gar.parameters.keep : "0") : "0"
+      repo_keep_filter          = gar.parameters != null ? (gar.parameters.repo_keep_filter != null ? gar.parameters.repo_keep_filter : "") : ""
+      repository_match_prefix   = gar.parameters != null ? (gar.parameters.repository_match_prefix != null ? gar.parameters.repository_match_prefix : "") : ""
       tag_filter                = gar.parameters != null ? (gar.parameters.tag_filter != null ? gar.parameters.tag_filter : "") : ""
       tag_filter_any            = gar.parameters != null ? (gar.parameters.tag_filter_any != null ? gar.parameters.tag_filter_any : "") : ""
       tag_filter_all            = gar.parameters != null ? (gar.parameters.tag_filter_all != null ? gar.parameters.tag_filter_all : "") : ""
+      tag_keep_any              = gar.parameters != null ? (gar.parameters.tag_keep_any != null ? gar.parameters.tag_keep_any : "") : ""
       recursive                 = gar.parameters != null ? (gar.parameters.recursive != null ? gar.parameters.recursive : false) : false
       dry_run                   = gar.parameters != null ? (gar.parameters.dry_run != null ? gar.parameters.dry_run : false) : false
-      filter                    = gar.parameters != null ? "grace-${gar.parameters.grace != null ? gar.parameters.grace : "0"}-keep-${gar.parameters.keep != null ? gar.parameters.keep : "0"}-tag_filter-${gar.parameters.tag_filter != null ? gar.parameters.tag_filter : "no"}-tag_filter_any-${gar.parameters.tag_filter_any != null ? gar.parameters.tag_filter_any : "no"}-tag_filter_all-${gar.parameters.tag_filter_all != null ? gar.parameters.tag_filter_all : "no"}-recursive-${gar.parameters.recursive != null ? gar.parameters.recursive : false}" : "delete-all-untagged-images-recursive"
+      filter                    = gar.parameters != null ? "grace-${gar.parameters.grace != null ? gar.parameters.grace : "0"}-keep-${gar.parameters.keep != null ? gar.parameters.keep : "0"}-repo_keep_filter-${gar.parameters.repo_keep_filter != null ? gar.parameters.repo_keep_filter : "no"}-repository_match_prefix-${gar.parameters.repository_match_prefix != null ? gar.parameters.repository_match_prefix : "no"}-tag_keep_any-${gar.parameters.tag_keep_any != null ? gar.parameters.tag_keep_any : "no"}-tag_filter-${gar.parameters.tag_filter != null ? gar.parameters.tag_filter : "no"}-tag_filter_any-${gar.parameters.tag_filter_any != null ? gar.parameters.tag_filter_any : "no"}-tag_filter_all-${gar.parameters.tag_filter_all != null ? gar.parameters.tag_filter_all : "no"}-recursive-${gar.parameters.recursive != null ? gar.parameters.recursive : false}" : "delete-all-untagged-images-recursive"
       scheduler_job_name        = gar.parameters != null ? gar.parameters.scheduler_job_name : null
       scheduler_job_description = gar.parameters != null ? gar.parameters.scheduler_job_description : null
     }
