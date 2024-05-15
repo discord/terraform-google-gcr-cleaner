@@ -37,8 +37,40 @@ resource "google_project_iam_member" "this" {
   member  = "serviceAccount:${google_service_account.cleaner.email}"
 }
 
-# Grant cleaner service account roles/artifactregistry.writer role to read the repository
+# Grant cleaner service account a custom role to read the repository
 # and delete container images.
+
+resource "google_project_iam_custom_role" "gar-cleaner" {
+  role_id     = "artifactregistry.cleaner"
+  title       = "GAR Cleaner"
+  description = "Allows cleaning up unused Docker image versions and tags from GAR."
+  permissions = [
+    // Basic read permissions
+    "artifactregistry.dockerimages.get",
+    "artifactregistry.dockerimages.list",
+    "artifactregistry.files.get",
+    "artifactregistry.files.list",
+    "artifactregistry.locations.get",
+    "artifactregistry.locations.list",
+    "artifactregistry.packages.get",
+    "artifactregistry.packages.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.list",
+    "artifactregistry.repositories.listEffectiveTags",
+    "artifactregistry.repositories.listTagBindings",
+    "artifactregistry.repositories.readViaVirtualRepository",
+    "artifactregistry.tags.get",
+    "artifactregistry.tags.list",
+    "artifactregistry.versions.get",
+    "artifactregistry.versions.list",
+    // Delete permissions
+    "artifactregistry.files.delete",
+    "artifactregistry.packages.delete",
+    "artifactregistry.tags.delete",
+    "artifactregistry.versions.delete",
+  ]
+}
+
 resource "google_artifact_registry_repository_iam_member" "this" {
   for_each = {
     for repo in var.gar_repositories : "${repo.name}_${repo.project_id != null ? repo.project_id : local.google_project_id}_${repo.region}" => repo...
@@ -47,7 +79,7 @@ resource "google_artifact_registry_repository_iam_member" "this" {
   project    = each.value[0].project_id != null ? each.value[0].project_id : local.google_project_id
   location   = each.value[0].region
   repository = "projects/${each.value[0].project_id != null ? each.value[0].project_id : local.google_project_id}/locations/${each.value[0].region}/repositories/${each.value[0].registry_name}"
-  role       = "roles/artifactregistry.repoAdmin"
+  role       = google_project_iam_custom_role.gar-cleaner.id
   member     = "serviceAccount:${google_service_account.cleaner.email}"
 
   provider = google-beta
