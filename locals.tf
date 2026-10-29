@@ -101,7 +101,8 @@ locals {
   # create final repositories list
   fetched_repositories = concat(local.project_all_repositories, local.repositories, local.gar_repositories)
 
-  running_as_a_service_account = length(regexall(".*@.*[.]gserviceaccount[.]com", data.google_client_openid_userinfo.terraform.email)) > 0
+  terraform_email              = data.google_client_openid_userinfo.terraform.email == null ? "" : data.google_client_openid_userinfo.terraform.email
+  running_as_a_service_account = length(regexall(".*@.*[.]gserviceaccount[.]com", local.terraform_email)) > 0
 
   gcr_cleaner_env = [
     {
